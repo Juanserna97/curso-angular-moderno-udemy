@@ -1,8 +1,7 @@
 import {
   AsyncPipe,
   CurrencyPipe,
-  NgFor,
-  SlicePipe,
+  SlicePipe
 } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { CheckoutService } from '@features/checkout/checkout.service';
@@ -18,7 +17,6 @@ import { RemoveProductComponent } from '@shared/ui/remove/remove-product.compone
     SlicePipe,
     CurrencyPipe,
     AsyncPipe,
-    NgFor,
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
