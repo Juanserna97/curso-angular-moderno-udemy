@@ -1,8 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Product } from '@features/products/product.interface';
-import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject } from 'rxjs';
 import { CartCalculatorService } from 'src/app/store/cart-state/cart-calculator.service';
 
 export interface CartStore {
@@ -19,9 +18,6 @@ export const initialCartState: CartStore = {
 
 @Injectable({ providedIn: 'root' })
 export class CartStateService {
-  private readonly _cartState = new BehaviorSubject<CartStore>(
-    initialCartState
-  );
   private readonly _cartCalculatorService = inject(CartCalculatorService);
   private readonly _toastrService = inject(ToastrService);
 
@@ -36,15 +32,8 @@ export class CartStateService {
     totalAmount: this.totalAmount(),
   }));
 
-  cart$ = this._cartState.asObservable();
+  cart$ =  toObservable(this.cartStore);
 
-  updateState(newState: CartStore): void {
-    this._cartState.next(newState);
-  }
-
-  getCurrentState(): CartStore {
-    return this._cartState.getValue();
-  }
   addToCart(product: Product): void {
     const currentProducts = this._products();
     const existingProductIndex = currentProducts.findIndex(
