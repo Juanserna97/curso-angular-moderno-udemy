@@ -3,7 +3,7 @@
     <div class="custom-flex-col">
       <h1 class="custom-heading">Checkout page</h1>
     </div>
-    @if ((cartService.cart$| async)?.productsCount) {
+    @if (cartStore().productsCount) {
     <div>
       <div class="custom-container-lg">
         <div class="flex justify-end mb-4">
@@ -19,7 +19,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (product of (cartService.cart$ | async)?.products; track product.id) {
+            @for (product of cartStore().products; track product.id) {
             <tr
               class="border-b border-gray-200"
             >
@@ -43,7 +43,7 @@
             <tr>
               <td colspan="2">Total:</td>
               <td colspan="4" class="custom-table-cell-total">
-                {{ (cartService.cart$ | async)?.totalAmount | currency }}
+                {{ cartStore().totalAmount | currency }}
               </td>
             </tr>
           </tfoot>
@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    } @if ((cartService.cart$ | async)?.productsCount === 0) {
+    } @else {
     <div>
       <div class="custom-flex-col">
         <h3 class="custom-empty-cart-heading">The shopping cart is empty</h3>

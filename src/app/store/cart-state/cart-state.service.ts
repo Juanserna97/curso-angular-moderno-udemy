@@ -32,8 +32,6 @@ export class CartStateService {
     totalAmount: this.totalAmount(),
   }));
 
-  cart$ =  toObservable(this.cartStore);
-
   addToCart(product: Product): void {
     const currentProducts = this._products();
     const existingProductIndex = currentProducts.findIndex(
