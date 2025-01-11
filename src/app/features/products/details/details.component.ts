@@ -8,7 +8,6 @@ import { CartStateService } from 'src/app/store/cart-state/cart-state.service';
 
 import { STAR_SVG } from '@shared/constants/star-svg.constants';
 import { AddToCartComponent } from '@shared/ui/add-to-cart/add-to-cart.component';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-details',
@@ -19,7 +18,7 @@ import { Observable } from 'rxjs';
 })
 export default class DetailsComponent {
   starsArray: number[] = new Array(5).fill(0);
-  product$!: Observable<Product | undefined>;
+  product!: Product | undefined;
 
   private _productId!: number;
   private readonly _activatedRoute = inject(ActivatedRoute);
@@ -30,7 +29,7 @@ export default class DetailsComponent {
   constructor() {
     this._activatedRoute.params.subscribe((params: Params) => {
       this._productId = params['id'];
-      this.product$ = this._productSvc.getProductById(+this._productId);
+      this.product = this._productSvc.getProductById(+this._productId);
     });
   }
 

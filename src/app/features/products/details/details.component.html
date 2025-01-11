@@ -1,5 +1,5 @@
 <section class="product-section">
-  @if (product$ | async; as product) {
+  @if (product) {
   <div class="product-container">
     <div class="product-wrapper">
       <img [alt]="product.title" class="product-image" [src]="product?.image" />
