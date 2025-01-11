@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class SpinnerService {
-  private isLoadingSubject = new BehaviorSubject<boolean>(false);
-  isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
+  private readonly isLoading = signal<boolean>(false);
+
+  isLoading$ = toObservable(this.isLoading);
 
   show(): void {
-    this.isLoadingSubject.next(true);
+    this.isLoading.set(true);
   }
 
   hide(): void {
-    this.isLoadingSubject.next(false);
+    this.isLoading.set(false);
   }
 }
