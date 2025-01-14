@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { CategoryService } from '@features/categories/categories.service';
 import { ProductsService } from '@features/products/products.service';
@@ -7,7 +6,7 @@ import { CategoryButtonComponent } from '../category-button/category-button.comp
 @Component({
   selector: 'app-category-filter',
   standalone: true,
-  imports: [AsyncPipe, CategoryButtonComponent],
+  imports: [ CategoryButtonComponent],
   styleUrl: './category-filter.component.scss',
   template: `
     <h2 class="heading">
@@ -18,7 +17,7 @@ import { CategoryButtonComponent } from '../category-button/category-button.comp
       <li>
         <app-categpry-button category="ALL" [(filterCategory)]="selectedCategory"/>
       </li>
-       @for (category of categories$ | async; track category){
+       @for (category of categories(); track category){
       <li>
         <app-categpry-button [category]="category" [(filterCategory)]="selectedCategory"/>
       </li>
@@ -27,7 +26,7 @@ import { CategoryButtonComponent } from '../category-button/category-button.comp
   `,
 })
 export class CategoryFilterComponent {
-  readonly categories$ = inject(CategoryService).categories$;
+  readonly categories = inject(CategoryService).categories;
 
   private readonly _productService = inject(ProductsService);
   selectedCategory = signal<string>('all');
