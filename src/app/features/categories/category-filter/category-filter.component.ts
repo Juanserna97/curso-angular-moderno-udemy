@@ -1,12 +1,13 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CategoryService } from '@features/categories/categories.service';
+import { ProductsService } from '@features/products/products.service';
+import { CategoryButtonComponent } from '../category-button/category-button.component';
 
 @Component({
   selector: 'app-category-filter',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, CategoryButtonComponent],
   styleUrl: './category-filter.component.scss',
   template: `
     <h2 class="heading">
@@ -14,18 +15,12 @@ import { CategoryService } from '@features/categories/categories.service';
       categories
     </h2>
     <ul class="list-container">
-      <!-- TODO: Can be an  component -->
       <li>
-        <button type="button" (click)="onClick('all')" class="btn btn-hover">
-          {{ 'ALL' }}
-        </button>
+        <app-categpry-button category="ALL" [(filterCategory)]="selectedCategory"/>
       </li>
-      <!-- TODO: Can be an  component -->
        @for (category of categories$ | async; track category){
       <li>
-        <button type="button" (click)="onClick(category)" class="btn btn-hover">
-          {{ category }}
-        </button>
+        <app-categpry-button [category]="category" [(filterCategory)]="selectedCategory"/>
       </li>
       }
     </ul>
@@ -34,13 +29,13 @@ import { CategoryService } from '@features/categories/categories.service';
 export class CategoryFilterComponent {
   readonly categories$ = inject(CategoryService).categories$;
 
-  private readonly _router = inject(Router);
+  private readonly _productService = inject(ProductsService);
+  selectedCategory = signal<string>('all');
 
-  onClick(category: string): void {
-    this._router.navigate([], {
-      queryParams: { category: category === 'all' ? null : category },
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
+  constructor(){
+    effect(()=> this._productService.filterProductsByCategory(this.selectedCategory()),{
+      allowSignalWrites: true,
+    }
+  );
   }
 }

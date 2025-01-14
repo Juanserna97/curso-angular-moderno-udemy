@@ -32,7 +32,7 @@ export class ProductsService {
   }
 
   filterProductsByCategory(category: string): void {
-    if (category === 'all') {
+    if (category.toLocaleLowerCase() === 'all') {
       this._filteredProducts.set(this._allProducts());
     } else {
       const filtered = this._allProducts().filter((product) => product.category === category);
